@@ -184,7 +184,7 @@ function buildRectangleExtra(shape: ShapeDescription): RectangleExtra {
     const fillEnabled = shape.fill?.enabled ?? false
 
     const borderStyleId = resolveBorderStyleId(shape)
-    const fillStyleId = shape.fill?.style ?? undefined
+    const fillStyleId = shape.fill?.style
 
     const corner = shape.border?.corner === "rounded"
         ? RectangleBorderCornerPattern.ENABLED
@@ -216,7 +216,7 @@ function buildTextExtra(shape: ShapeDescription): TextExtra {
 
 function buildLineExtra(shape: ShapeDescription): LineExtra {
     const strokeEnabled = shape.stroke?.enabled ?? true
-    const strokeStyleId = shape.stroke?.style ?? undefined
+    const strokeStyleId = shape.stroke?.style
 
     const dashPattern = shape.dash
         ? new StraightStrokeDashPattern(shape.dash.dash, shape.dash.gap, shape.dash.offset ?? 0)

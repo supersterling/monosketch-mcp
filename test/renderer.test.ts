@@ -1,18 +1,6 @@
 import { describe, it, expect } from "bun:test"
 import { renderShapes, type ShapeDescription, type RenderOptions } from "../src/renderer.ts"
 
-/**
- * Strip leading indentation from a template literal so we can write expected
- * output inline with readable indentation.
- */
-function trimIndent(str: string): string {
-    const lines = str.split("\n")
-    const nonEmptyLines = lines.filter(line => line.trim().length > 0)
-    const indentLengths = nonEmptyLines.map(line => line.match(/^\s*/)?.[0].length ?? 0)
-    const minIndent = Math.min(...indentLengths)
-    return lines.map(line => line.slice(minIndent)).join("\n").trim()
-}
-
 // Unicode box-drawing characters used by S1 (thin single line) stroke style
 const TL = "\u250C"  // ┌
 const TR = "\u2510"  // ┐
