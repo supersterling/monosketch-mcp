@@ -1,4 +1,9 @@
 import type { Comparable } from "../types/comparable.ts";
+import {
+    SerializableLineExtra,
+    SerializableRectExtra,
+    SerializableTextExtra,
+} from "../shape/serialization-extras.ts";
 import { type ILineExtra, type IRectangleExtra, ShapeExtraManager } from "./extra-manager.ts";
 import { PredefinedStraightStrokeStyle } from "./predefined-styles.ts";
 import {
@@ -104,6 +109,32 @@ export class LineExtra implements ShapeExtra, ILineExtra {
             isRoundedCorner,
         );
     }
+
+    static fromSerializable(serializableExtra: SerializableLineExtra): LineExtra {
+        return new LineExtra(
+            serializableExtra.isStrokeEnabled,
+            ShapeExtraManager.getLineStrokeStyle(serializableExtra.userSelectedStrokeStyleId),
+            serializableExtra.isStartAnchorEnabled,
+            ShapeExtraManager.getStartHeadAnchorChar(serializableExtra.userSelectedStartAnchorId),
+            serializableExtra.isEndAnchorEnabled,
+            ShapeExtraManager.getEndHeadAnchorChar(serializableExtra.userSelectedEndAnchorId),
+            StraightStrokeDashPattern.fromSerializableValue(serializableExtra.dashPattern),
+            serializableExtra.isRoundedCorner,
+        );
+    }
+
+    toSerializableExtra(): SerializableLineExtra {
+        return SerializableLineExtra.create({
+            isStrokeEnabled: this.isStrokeEnabled,
+            userSelectedStrokeStyleId: this.userSelectedStrokeStyle.id,
+            isStartAnchorEnabled: this.isStartAnchorEnabled,
+            userSelectedStartAnchorId: this.userSelectedStartAnchor.id,
+            isEndAnchorEnabled: this.isEndAnchorEnabled,
+            userSelectedEndAnchorId: this.userSelectedEndAnchor.id,
+            dashPattern: this.dashPattern.toSerializableValue(),
+            isRoundedCorner: this.isRoundedCorner,
+        });
+    }
 }
 
 /**
@@ -176,6 +207,28 @@ export class RectangleExtra implements ShapeExtra, IRectangleExtra {
             corner,
         );
     }
+
+    toSerializableExtra(): SerializableRectExtra {
+        return SerializableRectExtra.create({
+            isFillEnabled: this.isFillEnabled,
+            userSelectedFillStyleId: this.userSelectedFillStyle.id,
+            isBorderEnabled: this.isBorderEnabled,
+            userSelectedBorderStyleId: this.userSelectedBorderStyle.id,
+            dashPattern: this.dashPattern.toSerializableValue(),
+            corner: this.corner.toSerializableValue(),
+        });
+    }
+
+    static fromSerializable(serializableExtra: SerializableRectExtra): RectangleExtra {
+        return new RectangleExtra(
+            serializableExtra.isFillEnabled,
+            ShapeExtraManager.getRectangleFillStyle(serializableExtra.userSelectedFillStyleId),
+            serializableExtra.isBorderEnabled,
+            ShapeExtraManager.getRectangleBorderStyle(serializableExtra.userSelectedBorderStyleId),
+            StraightStrokeDashPattern.fromSerializableValue(serializableExtra.dashPattern),
+            RectangleBorderCornerPattern.fromSerializableValue(serializableExtra.corner),
+        );
+    }
 }
 
 /**
@@ -209,6 +262,21 @@ export class TextExtra implements ShapeExtra {
         return new TextExtra(
             boundExtra.copy(),
             textAlign,
+        );
+    }
+
+    toSerializableExtra(): SerializableTextExtra {
+        return SerializableTextExtra.create({
+            boundExtra: this.boundExtra.toSerializableExtra(),
+            textHorizontalAlign: this.textAlign.horizontalAlign,
+            textVerticalAlign: this.textAlign.verticalAlign,
+        });
+    }
+
+    static fromSerializable(serializableExtra: SerializableTextExtra): TextExtra {
+        return new TextExtra(
+            RectangleExtra.fromSerializable(serializableExtra.boundExtra),
+            TextAlign.from(serializableExtra.textHorizontalAlign, serializableExtra.textVerticalAlign),
         );
     }
 
