@@ -2,7 +2,9 @@
 
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js"
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js"
-import { z } from "zod"
+import { registerSceneTools } from "./src/tools/scene.ts"
+import { registerCanvasTools } from "./src/tools/canvas-tools.ts"
+import { registerUtilityTools } from "./src/tools/utilities.ts"
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Server Setup
@@ -14,33 +16,12 @@ const server = new McpServer(
 )
 
 // ─────────────────────────────────────────────────────────────────────────────
-// Helpers
-// ─────────────────────────────────────────────────────────────────────────────
-
-function json(data: unknown) {
-    return { content: [{ type: "text" as const, text: JSON.stringify(data, null, 2) }] }
-}
-
-function txt(msg: string) {
-    return { content: [{ type: "text" as const, text: msg }] }
-}
-
-// ─────────────────────────────────────────────────────────────────────────────
 // Tools
 // ─────────────────────────────────────────────────────────────────────────────
 
-// TODO: Register your tools here.
-//
-// server.registerTool(
-//     "tool_name",
-//     {
-//         description: "What this tool does",
-//         inputSchema: { /* zod schema or JSON schema */ },
-//     },
-//     async (input) => {
-//         return txt("result")
-//     },
-// )
+registerSceneTools(server)
+registerCanvasTools(server)
+registerUtilityTools(server)
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Main
