@@ -1,6 +1,6 @@
 # monosketch-mcp
 
-An MCP server that gives AI agents the ability to create beautiful ASCII diagrams using Unicode box-drawing characters. Built on the rendering engine from [MonoSketch](https://github.com/nicecoder97/nicecoder97.github.io).
+An MCP server that gives AI agents the ability to create beautiful ASCII diagrams using Unicode box-drawing characters. Built on the rendering engine from [MonoSketch](https://github.com/tuanchauict/MonoSketch).
 
 ```
 ┌──────────────────┐       ┌──────────────────┐
@@ -201,7 +201,7 @@ bun test
 
 ## Architecture
 
-The rendering engine was extracted from [MonoSketch](https://github.com/nicecoder97/nicecoder97.github.io), an open-source ASCII diagram editor.
+The rendering engine was extracted from [MonoSketch](https://github.com/tuanchauict/MonoSketch), an open-source ASCII diagram editor.
 
 ```
 Shape Description (JSON)
